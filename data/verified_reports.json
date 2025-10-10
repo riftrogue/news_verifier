@@ -1,0 +1,56 @@
+[
+  {
+    "news": "Shahrukh Khan was born in West Bengal.",
+    "verdict": false,
+    "confidence": 0.8,
+    "bias": "leaning",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "sharukh khan was born in punjab",
+    "verdict": false,
+    "confidence": 0.8,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "elon musk is the founder of openAI",
+    "verdict": false,
+    "confidence": 0.8,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "narendra modi used to sell tea",
+    "verdict": true,
+    "confidence": 0.9,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "new delhi is in NewYork",
+    "verdict": false,
+    "confidence": 0.9,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "Amir Khan was born in 2003",
+    "verdict": false,
+    "confidence": 0.9,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  }
+]

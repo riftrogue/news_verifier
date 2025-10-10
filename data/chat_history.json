@@ -1,0 +1,50 @@
+[
+  {
+    "role": "user",
+    "content": "Shahrukh Khan was born in West Bengal."
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Shahrukh Khan | Sentiment: Negative"
+  },
+  {
+    "role": "user",
+    "content": "sharukh khan was born in punjab"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Shahrukh Khan | Sentiment: Neutral"
+  },
+  {
+    "role": "user",
+    "content": "elon musk is the founder of openAI"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Technology | Key Entity: Elon Musk, OpenAI | Sentiment: Neutral"
+  },
+  {
+    "role": "user",
+    "content": "narendra modi used to sell tea"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Biography | Key Entity: Narendra Modi | Sentiment: Neutral"
+  },
+  {
+    "role": "user",
+    "content": "new delhi is in NewYork"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Geography | Key Entity: New Delhi, New York | Sentiment: Negative"
+  },
+  {
+    "role": "user",
+    "content": "Amir Khan was born in 2003"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Biography | Key Entity: Amir Khan | Sentiment: Neutral"
+  }
+]

@@ -1,0 +1,23 @@
+trusted_sources:
+  - wikipedia.org
+  - ndtv.com
+  - bbc.com
+  - reuters.com
+  - apnews.com
+  - thehindu.com
+  - timesofindia.indiatimes.com
+
+verification:
+  max_results: 5
+  time_range: year
+  search_depth: basic
+  topic: news
+
+storage:
+  vector_index_path: data/embeddings
+  chat_history_path: data/chat_history.json
+  verified_reports_path: data/verified_reports.json
+
+debug:
+  log_trace: true
+  trace_path: data/run_trace.jsonl

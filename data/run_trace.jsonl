@@ -1,0 +1,6 @@
+## Trace execution , will remove later
+{"stage": "LLM_A", "a_info": {"category": "Biography", "entity": "Amir Khan", "sentiment": "Neutral", "raw": "Category: Biography | Key Entity: Amir Khan | Sentiment: Neutral"}}
+{"stage": "VECTOR_SEARCH", "hits": []}
+{"stage": "WEB_VERIFY", "hits": [{"title": "Aamir Khan", "url": "https://en.wikipedia.org/wiki/Aamir_Khan", "source": "wikipedia.org"}, {"title": "Category:Aamir Khan", "url": "https://az.wikipedia.org/wiki/commons:Category:Aamir_Khan", "source": "wikipedia.org"}, {"title": "Amir Khan (boxer)", "url": "https://en.wikipedia.org/wiki/Amir_Khan_(boxer)", "source": "wikipedia.org"}, {"title": "Saif Ali Khan", "url": "https://en.wikipedia.org/wiki/Saif_Ali_Khan", "source": "wikipedia.org"}, {"title": "Mohammad Amir", "url": "https://en.wikipedia.org/wiki/Mohammad_Amir", "source": "wikipedia.org"}]}
+{"stage": "LLM_B", "b_info": {"analysis": "Contradiction: The claim is likely false, as Amir Khan (boxer) was born in 1986. \nEvidence: wikipedia.org (Amir Khan boxer)\nConfidence: 0.9", "confidence": 0.9}}
+{"stage": "LLM_C", "final_raw": {"verdict": false, "confidence": 0.9, "bias": "none", "justification": "The claim is likely false as Amir Khan, the boxer, was born in 1986, not 2003, according to Wikipedia."}}

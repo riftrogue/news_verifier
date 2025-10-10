@@ -1,0 +1,9 @@
+python-dotenv
+PyYAML
+langchain-core>=0.3.0
+langchain-groq>=0.2.0
+langchain-tavily>=0.0.7
+faiss-cpu>=1.8.0.post1
+sentence-transformers>=3.0.1
+numpy>=1.26.0
+requests>=2.31.0
