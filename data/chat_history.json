@@ -1,98 +1,42 @@
 [
   {
     "role": "user",
-    "content": "Shahrukh Khan was born in West Bengal."
+    "content": "Shah Rukh Khan was born in New Delhi."
   },
   {
     "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Shahrukh Khan | Sentiment: Negative"
+    "content": "Category: Biography | Key Entity: Shah Rukh Khan | Sentiment: Neutral"
   },
   {
     "role": "user",
-    "content": "sharukh khan was born in punjab"
+    "content": "Shah Rukh Khan was born in New Delhi."
   },
   {
     "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Shahrukh Khan | Sentiment: Neutral"
+    "content": "Category: Biography | Key Entity: Shah Rukh Khan | Sentiment: Neutral"
   },
   {
     "role": "user",
-    "content": "elon musk is the founder of openAI"
+    "content": "New Delhi is in New York."
   },
   {
     "role": "assistant",
-    "content": "Category: Technology | Key Entity: Elon Musk, OpenAI | Sentiment: Neutral"
+    "content": "Category: Geography | Key Entity: New Delhi | Sentiment: Negative"
   },
   {
     "role": "user",
-    "content": "narendra modi used to sell tea"
+    "content": "Salman Khan is a cricketer."
   },
   {
     "role": "assistant",
-    "content": "Category: Biography | Key Entity: Narendra Modi | Sentiment: Neutral"
+    "content": "Category: Sports | Key Entity: Salman Khan | Sentiment: Negative"
   },
   {
     "role": "user",
-    "content": "new delhi is in NewYork"
+    "content": "Shah Rukh Khan was born in New Delhi."
   },
   {
     "role": "assistant",
-    "content": "Category: Geography | Key Entity: New Delhi, New York | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "Amir Khan was born in 2003"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Biography | Key Entity: Amir Khan | Sentiment: Neutral"
-  },
-  {
-    "role": "user",
-    "content": "Amir Khan is dead"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Amir Khan | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "salman khan was born in 1999"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Salman Khan | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "Amir Khan is dead"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Amir Khan | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "Amir Khan was born in 2003"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Biography | Key Entity: Amir Khan | Sentiment: Neutral"
-  },
-  {
-    "role": "user",
-    "content": "Aamir Khan was born in 2003"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Aamir Khan | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "Aamir Khan was born in 2003"
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Entertainment | Key Entity: Aamir Khan | Sentiment: Negative"
+    "content": "Category: Biography | Key Entity: Shah Rukh Khan | Sentiment: Neutral"
   }
 ]

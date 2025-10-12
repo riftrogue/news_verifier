@@ -21,3 +21,59 @@ storage:
 debug:
   log_trace: true
   trace_path: data/run_trace.jsonl
+
+# Additional configuration for category-based verification
+trusted_general:
+  - wikipedia.org
+  - bbc.com
+  - reuters.com
+  - apnews.com
+  - theguardian.com
+
+trusted_by_category:
+  entertainment:
+    - imdb.com
+    - rottentomatoes.com
+    - variety.com
+    - hollywoodreporter.com
+    - bollywoodhungama.com
+    - filmfare.com
+    - ndtv.com
+    - timesofindia.indiatimes.com
+    - wikipedia.org
+  politics:
+    - bbc.com
+    - reuters.com
+    - apnews.com
+    - theguardian.com
+    - nytimes.com
+  sports:
+    - espn.com
+    - bbc.com
+    - fifa.com
+    - icc-cricket.com
+    - olympics.com
+    - wikipedia.org
+  science:
+    - nature.com
+    - science.org
+    - nih.gov
+    - nasa.gov
+    - bbc.com
+  finance:
+    - bloomberg.com
+    - ft.com
+    - cnbc.com
+    - reuters.com
+
+social_domains:
+  - x.com
+  - twitter.com
+  - instagram.com
+  - facebook.com
+  - youtube.com
+
+official_site_keywords:
+  - official site
+  - official website
+  - official page

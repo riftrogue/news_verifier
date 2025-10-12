@@ -1,132 +1,32 @@
 [
   {
-    "news": "Shahrukh Khan was born in West Bengal.",
-    "verdict": false,
-    "confidence": 0.8,
-    "bias": "leaning",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "sharukh khan was born in punjab",
-    "verdict": false,
-    "confidence": 0.8,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "elon musk is the founder of openAI",
-    "verdict": false,
-    "confidence": 0.8,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "narendra modi used to sell tea",
+    "news": "Shah Rukh Khan was born in New Delhi.",
     "verdict": true,
-    "confidence": 0.9,
+    "confidence": 1.0,
+    "context": "birthplace",
     "bias": "none",
     "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "new delhi is in NewYork",
-    "verdict": false,
-    "confidence": 0.9,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "Amir Khan was born in 2003",
-    "verdict": false,
-    "confidence": 0.9,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "Amir Khan is dead",
-    "verdict": false,
-    "confidence": 0.2,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "salman khan was born in 1999",
-    "verdict": false,
-    "confidence": 0.9,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "Amir Khan is dead",
-    "verdict": false,
-    "confidence": 0.8,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ]
-  },
-  {
-    "news": "Amir Khan was born in 2003",
-    "verdict": false,
-    "confidence": 0.0,
-    "bias": "none",
-    "verified_sources": [
+      "x.com",
       "wikipedia.org"
     ],
     "entity_details": {
-      "name": "Amir Khan",
-      "label": null,
-      "summary": null,
-      "url": null,
-      "source": null
-    }
-  },
-  {
-    "news": "Aamir Khan was born in 2003",
-    "verdict": false,
-    "confidence": 0.0,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ],
-    "entity_details": {
-      "name": "Aamir Khan",
-      "label": null,
-      "summary": null,
-      "url": null,
-      "source": null
-    }
-  },
-  {
-    "news": "Aamir Khan was born in 2003",
-    "verdict": false,
-    "confidence": 0.0,
-    "bias": "none",
-    "verified_sources": [
-      "wikipedia.org"
-    ],
-    "entity_details": {
-      "name": "Aamir Khan",
-      "label": null,
+      "name": "Shah Rukh Khan",
+      "label": "Indian actor (born 1965)",
       "role": "actor",
-      "summary": "**Aamir Hussain Khan** (pronounced ; born 14 March 1965) is an Indian actor, filmmaker, and television personality who works in Hindi films.",
-      "url": "https://en.wikipedia.org/wiki/Aamir_Khan",
-      "source": "wikipedia.org"
+      "summary": "Shahrukh Khan, and popularly known by the initials SRK, is an Indian actor and film producer renowned for his work in Hindi cinema. Referred to in the media as the \"Baadshah of Bollywood\" and \"King Khan\", he has appeared in more than 100 films, and earned numerous accolades, including a National Film Award and 15 Filmfare Awards. He has been awarded the Padma Shri by the Government of India, as well as the Order of Arts and Letters and Legion of Honour by the Government of France. Khan has a significant following in Asia and the Indian diaspora worldwide. In terms of income, several media outlets have described him as one of the most successful film stars in the world.",
+      "url": "https://en.wikipedia.org/wiki/Shah_Rukh_Khan",
+      "source": "wikipedia.org",
+      "birthplace": "New Delhi",
+      "occupations": [
+        "television presenter",
+        "actor",
+        "screenwriter",
+        "film producer",
+        "dancer",
+        "film actor",
+        "television producer",
+        "television actor"
+      ]
     }
   }
 ]
