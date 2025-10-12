@@ -52,5 +52,81 @@
     "verified_sources": [
       "wikipedia.org"
     ]
+  },
+  {
+    "news": "Amir Khan is dead",
+    "verdict": false,
+    "confidence": 0.2,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "salman khan was born in 1999",
+    "verdict": false,
+    "confidence": 0.9,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "Amir Khan is dead",
+    "verdict": false,
+    "confidence": 0.8,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ]
+  },
+  {
+    "news": "Amir Khan was born in 2003",
+    "verdict": false,
+    "confidence": 0.0,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ],
+    "entity_details": {
+      "name": "Amir Khan",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": null
+    }
+  },
+  {
+    "news": "Aamir Khan was born in 2003",
+    "verdict": false,
+    "confidence": 0.0,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ],
+    "entity_details": {
+      "name": "Aamir Khan",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": null
+    }
+  },
+  {
+    "news": "Aamir Khan was born in 2003",
+    "verdict": false,
+    "confidence": 0.0,
+    "bias": "none",
+    "verified_sources": [
+      "wikipedia.org"
+    ],
+    "entity_details": {
+      "name": "Aamir Khan",
+      "label": null,
+      "role": "actor",
+      "summary": "**Aamir Hussain Khan** (pronounced ; born 14 March 1965) is an Indian actor, filmmaker, and television personality who works in Hindi films.",
+      "url": "https://en.wikipedia.org/wiki/Aamir_Khan",
+      "source": "wikipedia.org"
+    }
   }
 ]

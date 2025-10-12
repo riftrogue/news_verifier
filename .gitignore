@@ -1,0 +1,6 @@
+.env
+data/run_trace.jsonl
+.venv
+__pycache__/
+.ipynb_checkpoints
+.vscode

@@ -10,7 +10,7 @@ import yaml
 
 from llm_agents import LLMAgentA, LLMAgentB, LLMAgentC, _load_json
 from vector_db import SimpleVectorDB
-from web_verifier import web_verify
+from web_verifier import web_verify, enrich_entity
 
 
 def load_settings(path: str = "configs/settings.yaml") -> dict:
@@ -97,12 +97,22 @@ def main():
 	_trace(settings, "LLM_C", {"final_raw": final})
 
 	# augment with required fields
+	# Optional entity enrichment
+	enrichment = None
+	entity_name = a_info.get("entity")
+	try:
+		enrichment = enrich_entity(entity_name) if entity_name else None
+	except Exception:
+		enrichment = None
+	_trace(settings, "ENRICH_ENTITY", {"entity": entity_name, "enrichment": enrichment})
+
 	final_out = {
 		"news": news,
 		"verdict": final.get("verdict", "Uncertain"),
 		"confidence": final.get("confidence", b_info.get("confidence", 0.5)),
 		"bias": final.get("bias", tone or "none"),
-		"verified_sources": list({ev.get("source") for ev in evidence if ev.get("source")})
+		"verified_sources": list({ev.get("source") for ev in evidence if ev.get("source")}),
+		"entity_details": enrichment or {"name": entity_name, "label": None, "summary": None, "url": None, "source": None},
 	}
 
 	# Persist lightweight report

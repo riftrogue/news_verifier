@@ -46,5 +46,53 @@
   {
     "role": "assistant",
     "content": "Category: Biography | Key Entity: Amir Khan | Sentiment: Neutral"
+  },
+  {
+    "role": "user",
+    "content": "Amir Khan is dead"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Amir Khan | Sentiment: Negative"
+  },
+  {
+    "role": "user",
+    "content": "salman khan was born in 1999"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Salman Khan | Sentiment: Negative"
+  },
+  {
+    "role": "user",
+    "content": "Amir Khan is dead"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Amir Khan | Sentiment: Negative"
+  },
+  {
+    "role": "user",
+    "content": "Amir Khan was born in 2003"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Biography | Key Entity: Amir Khan | Sentiment: Neutral"
+  },
+  {
+    "role": "user",
+    "content": "Aamir Khan was born in 2003"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Aamir Khan | Sentiment: Negative"
+  },
+  {
+    "role": "user",
+    "content": "Aamir Khan was born in 2003"
+  },
+  {
+    "role": "assistant",
+    "content": "Category: Entertainment | Key Entity: Aamir Khan | Sentiment: Negative"
   }
 ]
