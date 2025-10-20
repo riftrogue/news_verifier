@@ -1,42 +1,10 @@
 [
   {
     "role": "user",
-    "content": "Shah Rukh Khan was born in New Delhi."
+    "content": "cristiano Ronaldo was born in india at 1999"
   },
   {
     "role": "assistant",
-    "content": "Category: Biography | Key Entity: Shah Rukh Khan | Sentiment: Neutral"
-  },
-  {
-    "role": "user",
-    "content": "Shah Rukh Khan was born in New Delhi."
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Biography | Key Entity: Shah Rukh Khan | Sentiment: Neutral"
-  },
-  {
-    "role": "user",
-    "content": "New Delhi is in New York."
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Geography | Key Entity: New Delhi | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "Salman Khan is a cricketer."
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Sports | Key Entity: Salman Khan | Sentiment: Negative"
-  },
-  {
-    "role": "user",
-    "content": "Shah Rukh Khan was born in New Delhi."
-  },
-  {
-    "role": "assistant",
-    "content": "Category: Biography | Key Entity: Shah Rukh Khan | Sentiment: Neutral"
+    "content": "Category: Sports | Key Entity: Cristiano Ronaldo | Sentiment: Negative"
   }
 ]

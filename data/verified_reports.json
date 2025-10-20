@@ -1,32 +1,367 @@
 [
   {
-    "news": "Shah Rukh Khan was born in New Delhi.",
-    "verdict": true,
-    "confidence": 1.0,
+    "news": "cristiano ronaldo was born is argentina",
+    "verdict": false,
+    "confidence": 0.7,
     "context": "birthplace",
+    "category": "general",
     "bias": "none",
     "verified_sources": [
-      "x.com",
-      "wikipedia.org"
+      "x.com"
     ],
     "entity_details": {
-      "name": "Shah Rukh Khan",
-      "label": "Indian actor (born 1965)",
-      "role": "actor",
-      "summary": "Shahrukh Khan, and popularly known by the initials SRK, is an Indian actor and film producer renowned for his work in Hindi cinema. Referred to in the media as the \"Baadshah of Bollywood\" and \"King Khan\", he has appeared in more than 100 films, and earned numerous accolades, including a National Film Award and 15 Filmfare Awards. He has been awarded the Padma Shri by the Government of India, as well as the Order of Arts and Letters and Legion of Honour by the Government of France. Khan has a significant following in Asia and the Indian diaspora worldwide. In terms of income, several media outlets have described him as one of the most successful film stars in the world.",
-      "url": "https://en.wikipedia.org/wiki/Shah_Rukh_Khan",
-      "source": "wikipedia.org",
-      "birthplace": "New Delhi",
-      "occupations": [
-        "television presenter",
-        "actor",
-        "screenwriter",
-        "film producer",
-        "dancer",
-        "film actor",
-        "television producer",
-        "television actor"
-      ]
+      "name": "Unknown",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": null
+    },
+    "trace": [
+      {
+        "source": "x.com",
+        "snippet": "Unknown (@_unknown) / X",
+        "url": "https://x.com/_unknown"
+      },
+      {
+        "source": "x.com",
+        "snippet": "Unknown Music (@unknownmusic) / X",
+        "url": "https://x.com/unknownmusic"
+      },
+      {
+        "source": "x.com",
+        "snippet": "Unknown (@ItsUnknownMF) / X",
+        "url": "https://x.com/itsunknownmf"
+      },
+      {
+        "source": "x.com",
+        "snippet": "Unknown (@UnknownEmpress) / X",
+        "url": "https://x.com/unknownempress"
+      },
+      {
+        "source": "x.com",
+        "snippet": "The Create Unknown (@createunknown) / X",
+        "url": "https://x.com/createunknown"
+      }
+    ],
+    "explanation": "Claim contradicted by x.com."
+  },
+  {
+    "news": "cristiano ronaldo was born is argentina",
+    "verdict": false,
+    "confidence": 0.99,
+    "context": "multi_agent",
+    "category": "general",
+    "bias": "none",
+    "verified_sources": [
+      "https://www.cbssports.com/soccer/news/maradona-says-he-wishes-ronaldo-was-born-in-argentina-and-compares-him-to-messi/",
+      "https://en.wikipedia.org/wiki/Cristiano_Ronaldo",
+      "https://vocal.media/motivation/the-story-of-cristiano-ronaldo-s-life",
+      "https://www.imdb.com/name/nm1860184/bio/",
+      "https://spyscape.com/article/cristiano-ronaldo-from-poverty-to-family-and-football-superstardom"
+    ],
+    "entity_details": {
+      "name": "cristiano ronaldo, argentina",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": "multi_agent_analysis"
+    },
+    "trace": [
+      {
+        "source": "Maradona says he wishes Ronaldo was born in Argentina and ...",
+        "snippet": "He went as far as saying he wished Ronaldo was born in another country - his country. \"I wish Ronaldo were Argentine,\" Maradona said to TyC...",
+        "url": "https://www.cbssports.com/soccer/news/maradona-says-he-wishes-ronaldo-was-born-in-argentina-and-compares-him-to-messi/"
+      },
+      {
+        "source": "Cristiano Ronaldo - Wikipedia",
+        "snippet": "Early life. Cristiano Ronaldo dos Santos Aveiro was born on 5 February 1985 in the São Pedro parish of Funchal, the capital of the Portuguese island of Madeira...",
+        "url": "https://en.wikipedia.org/wiki/Cristiano_Ronaldo"
+      },
+      {
+        "source": "The Story of Cristiano Ronaldo's Life | Motivation - Vocal Media",
+        "snippet": "According to many Cristiano Ronaldo Biography books, he was born in Funchal, Madeira, Portugal, which is a small island off the western coast of the country....",
+        "url": "https://vocal.media/motivation/the-story-of-cristiano-ronaldo-s-life"
+      },
+      {
+        "source": "Cristiano Ronaldo - Biography - IMDb",
+        "snippet": "## Cristiano Ronaldo Cristiano Ronaldo dos Santos Aveiro * Cristiano Ronaldo dos Santos Aveiro was born on February 5, 1985, in Madeira, Portugal to Maria Dolores dos Santos Aveiro and José Diniz Avei...",
+        "url": "https://www.imdb.com/name/nm1860184/bio/"
+      },
+      {
+        "source": "Cristiano Ronaldo: From Poverty to Family and Football Superstardom",
+        "snippet": "It was a long, difficult climb for Cristiano Ronaldo dos Santos Aveiro, born in 1985 and named after his father's favorite actor Ronald Reagan. He grew up...",
+        "url": "https://spyscape.com/article/cristiano-ronaldo-from-poverty-to-family-and-football-superstardom"
+      }
+    ],
+    "explanation": "Multi-agent analysis: Fake with 99% confidence. Found 5 sources. Key findings: Domain classified as general with confidence 0.80; Identified 2 key entities with risk assessment",
+    "multi_agent_details": {
+      "domain": "general",
+      "named_entities": [
+        "cristiano ronaldo",
+        "argentina"
+      ],
+      "fact_findings": [
+        "Domain classified as general with confidence 0.80",
+        "Identified 2 key entities with risk assessment",
+        "Found 10 supporting official sources"
+      ],
+      "agent_count": 6,
+      "analysis_type": "parallel_fusion"
+    }
+  },
+  {
+    "news": "cristiano ronaldo was born is argentina",
+    "verdict": false,
+    "confidence": 0.99,
+    "context": "multi_agent",
+    "category": "general",
+    "bias": "none",
+    "verified_sources": [
+      "https://www.cbssports.com/soccer/news/maradona-says-he-wishes-ronaldo-was-born-in-argentina-and-compares-him-to-messi/",
+      "https://en.wikipedia.org/wiki/Cristiano_Ronaldo",
+      "https://vocal.media/motivation/the-story-of-cristiano-ronaldo-s-life",
+      "https://www.imdb.com/name/nm1860184/bio/",
+      "https://spyscape.com/article/cristiano-ronaldo-from-poverty-to-family-and-football-superstardom"
+    ],
+    "entity_details": {
+      "name": "cristiano ronaldo, argentina",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": "multi_agent_analysis"
+    },
+    "trace": [
+      {
+        "source": "Maradona says he wishes Ronaldo was born in Argentina and ...",
+        "snippet": "He went as far as saying he wished Ronaldo was born in another country - his country. \"I wish Ronaldo were Argentine,\" Maradona said to TyC...",
+        "url": "https://www.cbssports.com/soccer/news/maradona-says-he-wishes-ronaldo-was-born-in-argentina-and-compares-him-to-messi/"
+      },
+      {
+        "source": "Cristiano Ronaldo - Wikipedia",
+        "snippet": "Early life. Cristiano Ronaldo dos Santos Aveiro was born on 5 February 1985 in the São Pedro parish of Funchal, the capital of the Portuguese island of Madeira...",
+        "url": "https://en.wikipedia.org/wiki/Cristiano_Ronaldo"
+      },
+      {
+        "source": "The Story of Cristiano Ronaldo's Life | Motivation - Vocal Media",
+        "snippet": "According to many Cristiano Ronaldo Biography books, he was born in Funchal, Madeira, Portugal, which is a small island off the western coast of the country....",
+        "url": "https://vocal.media/motivation/the-story-of-cristiano-ronaldo-s-life"
+      },
+      {
+        "source": "Cristiano Ronaldo - Biography - IMDb",
+        "snippet": "## Cristiano Ronaldo Cristiano Ronaldo dos Santos Aveiro * Cristiano Ronaldo dos Santos Aveiro was born on February 5, 1985, in Madeira, Portugal to Maria Dolores dos Santos Aveiro and José Diniz Avei...",
+        "url": "https://www.imdb.com/name/nm1860184/bio/"
+      },
+      {
+        "source": "Cristiano Ronaldo: From Poverty to Family and Football Superstardom",
+        "snippet": "It was a long, difficult climb for Cristiano Ronaldo dos Santos Aveiro, born in 1985 and named after his father's favorite actor Ronald Reagan. He grew up...",
+        "url": "https://spyscape.com/article/cristiano-ronaldo-from-poverty-to-family-and-football-superstardom"
+      }
+    ],
+    "explanation": "Multi-agent analysis: Fake with 99% confidence. Found 5 sources. Key findings: Domain classified as general with confidence 0.80; Identified 2 key entities with risk assessment",
+    "multi_agent_details": {
+      "domain": "general",
+      "named_entities": [
+        "cristiano ronaldo",
+        "argentina"
+      ],
+      "fact_findings": [
+        "Domain classified as general with confidence 0.80",
+        "Identified 2 key entities with risk assessment",
+        "Found 10 supporting official sources"
+      ],
+      "agent_count": 6,
+      "analysis_type": "parallel_fusion"
+    }
+  },
+  {
+    "news": "cristiano ronaldo was born is argentina",
+    "verdict": false,
+    "confidence": 0.99,
+    "context": "multi_agent",
+    "category": "sports",
+    "bias": "none",
+    "verified_sources": [
+      "https://en.wikipedia.org/wiki/Cristiano_Ronaldo",
+      "https://www.instagram.com/reel/DP5bgLsCdxm/",
+      "https://cristianoronaldo7dotblog.wordpress.com/early-life/",
+      "https://newswirengr.com/2025/10/20/who-is-cristiano-ronaldo-biography-early-life-family-children-net-worth-children-and-scandal/",
+      "https://www.quora.com/Does-Cristiano-Ronaldo-have-any-traceable-non-European-ancestry"
+    ],
+    "entity_details": {
+      "name": "cristiano ronaldo, argentina",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": "multi_agent_analysis"
+    },
+    "trace": [
+      {
+        "source": "Cristiano Ronaldo - Wikipedia",
+        "snippet": "Early life. Cristiano Ronaldo dos Santos Aveiro was born on 5 February 1985 in the São Pedro parish of Funchal, the capital of the Portuguese island of Madeira...",
+        "url": "https://en.wikipedia.org/wiki/Cristiano_Ronaldo"
+      },
+      {
+        "source": "Cristiano Ronaldo born on February 5, 1985, in Funchal, Madeira ...",
+        "snippet": "Cristiano Ronaldo born on February 5, 1985, in Funchal, Madeira, Portugal, is a football icon renowned for his exceptional skills, athleticism,...",
+        "url": "https://www.instagram.com/reel/DP5bgLsCdxm/"
+      },
+      {
+        "source": "Biography - Cristiano Ronaldo - WordPress.com",
+        "snippet": "Cristiano Ronaldo dos Santos Aveiro was born in São Pedro, Funchal, on the island of Madeira, Portugal, and grew up in Santo António, Funchal....",
+        "url": "https://cristianoronaldo7dotblog.wordpress.com/early-life/"
+      },
+      {
+        "source": "Who is Cristiano Ronaldo? : Biography, Early Life, Family, Children ...",
+        "snippet": "Born on February 5, 1985, in Funchal, Madeira, Portugal, his immense talent, dedication, and longevity have led him to conquer both club and...",
+        "url": "https://newswirengr.com/2025/10/20/who-is-cristiano-ronaldo-biography-early-life-family-children-net-worth-children-and-scandal/"
+      },
+      {
+        "source": "Does Cristiano Ronaldo have any traceable non-European ancestry?",
+        "snippet": "Cristiano Ronaldo sometimes looks like a mixed-race “brown” person but it’s because of the m Cristiano Ronaldo sometimes looks like a mixed-race “brown” person but it’s because of the melanin and that...",
+        "url": "https://www.quora.com/Does-Cristiano-Ronaldo-have-any-traceable-non-European-ancestry"
+      }
+    ],
+    "explanation": "Multi-agent analysis: Fake with 99% confidence. Found 5 sources. Key findings: Domain classified as sports with confidence 0.90; Identified 2 key entities with risk assessment",
+    "multi_agent_details": {
+      "domain": "sports",
+      "named_entities": [
+        "cristiano ronaldo",
+        "argentina"
+      ],
+      "fact_findings": [
+        "Domain classified as sports with confidence 0.90",
+        "Identified 2 key entities with risk assessment",
+        "Found 8 supporting official sources"
+      ],
+      "agent_count": 6,
+      "analysis_type": "parallel_fusion"
+    }
+  },
+  {
+    "news": "cristiano ronaldo was born in argentina",
+    "verdict": false,
+    "confidence": 0.99,
+    "context": "multi_agent",
+    "category": "sports",
+    "bias": "none",
+    "verified_sources": [
+      "https://www.cbssports.com/soccer/news/maradona-says-he-wishes-ronaldo-was-born-in-argentina-and-compares-him-to-messi/",
+      "https://www.instagram.com/reel/DP5bgLsCdxm/",
+      "https://www.quora.com/Does-Cristiano-Ronaldo-have-any-traceable-non-European-ancestry",
+      "https://kids.kiddle.co/Cristiano_Ronaldo",
+      "https://newswirengr.com/2025/10/20/who-is-cristiano-ronaldo-biography-early-life-family-children-net-worth-children-and-scandal/"
+    ],
+    "entity_details": {
+      "name": "cristiano ronaldo, argentina",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": "multi_agent_analysis"
+    },
+    "trace": [
+      {
+        "source": "Maradona says he wishes Ronaldo was born in Argentina and ...",
+        "snippet": "He went as far as saying he wished Ronaldo was born in another country - his country. \"I wish Ronaldo were Argentine,\" Maradona said to TyC...",
+        "url": "https://www.cbssports.com/soccer/news/maradona-says-he-wishes-ronaldo-was-born-in-argentina-and-compares-him-to-messi/"
+      },
+      {
+        "source": "Cristiano Ronaldo born on February 5, 1985, in Funchal, Madeira ...",
+        "snippet": "Cristiano Ronaldo born on February 5, 1985, in Funchal, Madeira, Portugal, is a football icon renowned for his exceptional skills, athleticism,...",
+        "url": "https://www.instagram.com/reel/DP5bgLsCdxm/"
+      },
+      {
+        "source": "Does Cristiano Ronaldo have any traceable non-European ancestry?",
+        "snippet": "Cristiano Ronaldo sometimes looks like a mixed-race “brown” person but it’s because of the m Cristiano Ronaldo sometimes looks like a mixed-race “brown” person but it’s because of the melanin and that...",
+        "url": "https://www.quora.com/Does-Cristiano-Ronaldo-have-any-traceable-non-European-ancestry"
+      },
+      {
+        "source": "Cristiano Ronaldo Facts for Kids",
+        "snippet": "**Cristiano Ronaldo dos Santos Aveiro** (born February 5, 1985) is a professional football player from Portugal. Ronaldo has won many awards, including five Ballon d'Or awards, which are given to the ...",
+        "url": "https://kids.kiddle.co/Cristiano_Ronaldo"
+      },
+      {
+        "source": "Who is Cristiano Ronaldo? : Biography, Early Life, Family, Children ...",
+        "snippet": "Ronaldo grew up in a poor, Catholic home in Santo António, Funchal. He is the youngest of four children born to Maria Dolores dos Santos Aveiro,...",
+        "url": "https://newswirengr.com/2025/10/20/who-is-cristiano-ronaldo-biography-early-life-family-children-net-worth-children-and-scandal/"
+      }
+    ],
+    "explanation": "Multi-agent analysis: Fake with 99% confidence. Found 5 sources. Key findings: Domain classified as sports with confidence 0.90; Identified 2 key entities with risk assessment",
+    "multi_agent_details": {
+      "domain": "sports",
+      "named_entities": [
+        "cristiano ronaldo",
+        "argentina"
+      ],
+      "fact_findings": [
+        "Domain classified as sports with confidence 0.90",
+        "Identified 2 key entities with risk assessment",
+        "Found 10 supporting official sources"
+      ],
+      "agent_count": 6,
+      "analysis_type": "parallel_fusion"
+    }
+  },
+  {
+    "news": "test claim",
+    "verdict": false,
+    "confidence": 0.99,
+    "context": "multi_agent",
+    "category": "general",
+    "bias": "none",
+    "verified_sources": [
+      "https://www.lawinsider.com/dictionary/test-claim",
+      "https://diversifyrx.com/whats-the-scoop-with-test-claims/",
+      "https://conjointly.com/products/claims-test/",
+      "https://www.quantilope.com/resources/glossary-claims-testing",
+      "https://www.letshighlight.com/blog/claims-testing"
+    ],
+    "entity_details": {
+      "name": "[Entity]",
+      "label": null,
+      "summary": null,
+      "url": null,
+      "source": "multi_agent_analysis"
+    },
+    "trace": [
+      {
+        "source": "Test Claim Definition | Law Insider",
+        "snippet": "Test Claim means the first claim filed with the Commission alleging that a particular statute or executive order imposes costs mandated by the state,...",
+        "url": "https://www.lawinsider.com/dictionary/test-claim"
+      },
+      {
+        "source": "Pharmacy Test Claims: What You Need to Know - DiversifyRx",
+        "snippet": "A test claim is a claim sent by the pharmacy to see the coverage of a particular drug on a patient's plan, and if it is, what does that coverage look like....",
+        "url": "https://diversifyrx.com/whats-the-scoop-with-test-claims/"
+      },
+      {
+        "source": "Claims Test - Conjointly",
+        "snippet": "Conjointly Claims Test is a powerful and comprehensive methodology for testing up to 300 product claims that helps you identify the most convincing claims....",
+        "url": "https://conjointly.com/products/claims-test/"
+      },
+      {
+        "source": "Claims Testing: Why It's Essential to Your Brand - Quantilope",
+        "snippet": "Claims testing is the process of identifying which test claim(s) are best able to drive a desired outcome (eg, driving purchase intent, reinforcing brand...",
+        "url": "https://www.quantilope.com/resources/glossary-claims-testing"
+      },
+      {
+        "source": "What is Claims Testing? - Highlight",
+        "snippet": "Claims testing verifies that a product's benefits are backed by data, proving product features so customers can trust them....",
+        "url": "https://www.letshighlight.com/blog/claims-testing"
+      }
+    ],
+    "explanation": "Multi-agent analysis: Fake with 99% confidence. Found 5 sources. Key findings: Domain classified as general with confidence 0.80; Identified 1 key entities with risk assessment",
+    "multi_agent_details": {
+      "domain": "general",
+      "named_entities": [
+        "[Entity]"
+      ],
+      "fact_findings": [
+        "Domain classified as general with confidence 0.80",
+        "Identified 1 key entities with risk assessment",
+        "Found 8 supporting official sources"
+      ],
+      "agent_count": 6,
+      "analysis_type": "parallel_fusion"
     }
   }
 ]
