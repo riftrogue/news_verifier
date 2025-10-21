@@ -1,16 +1,14 @@
 import asyncio
-import json
 import logging
 import math
 import os
 import re
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List
 from datetime import datetime
 
 from dotenv import load_dotenv
-from langchain_core.language_models import BaseLanguageModel
-from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_tavily import TavilySearch
@@ -39,30 +37,6 @@ class FinalVerdict:
     sources: List[Dict[str, str]]
     final_verdict: str  # "Fake" or "Real"
     confidence: int  # percentage
-
-def _load_json(path: str, default):
-	try:
-		with open(path, "r", encoding="utf-8") as f:
-			return json.load(f)
-	except Exception:
-		return default
-
-def _save_json(path: str, data):
-	os.makedirs(os.path.dirname(path), exist_ok=True)
-	with open(path, "w", encoding="utf-8") as f:
-		json.dump(data, f, ensure_ascii=False, indent=2)
-
-def get_llm() -> BaseLanguageModel:
-	"""Get default LLM instance for legacy compatibility"""
-	groq_api_key = os.getenv("GROQ_API_KEY_A1")
-	if groq_api_key:
-		return ChatGroq(
-			model="llama-3.1-8b-instant",
-			api_key=groq_api_key,
-			temperature=0.1
-		)
-	else:
-		raise ValueError("GROQ_API_KEY_A1 not found in environment variables")
 
 class MultiAgentFactChecker:
     """
@@ -517,9 +491,11 @@ Be objective and focus on linguistic patterns that correlate with misinformation
                     # Clean entity names
                     for ent in entities_raw:
                         if ':' in ent:
-                            entity_name = ent.split(':')[0].strip().replace('-', '').strip()
-                            if entity_name:
-                                named_entities.append(entity_name)
+                            entity_name = ent.split(':')[0].strip()
+                        else:
+                            entity_name = ent.strip("- ")
+                        if entity_name:
+                            named_entities.append(entity_name)
             
             # Compute fusion: L = b + Σ w_i * s_i
             b = 0  # bias term
@@ -637,118 +613,5 @@ Be objective and focus on linguistic patterns that correlate with misinformation
         final_verdict = await self.agent_a6_orchestrator(claim, valid_results)
         
         return final_verdict
-
-
-# Legacy compatibility classes (kept for backward compatibility)
-class LLMAgentA:
-    """Legacy agent A - now uses MultiAgentFactChecker internally"""
-    def __init__(self, chat_history_path: str):
-        self.chat_history_path = chat_history_path
-        self.fact_checker = MultiAgentFactChecker()
-    
-    def analyze(self, news: str) -> Dict:
-        # Simplified legacy compatibility - just return basic analysis
-        try:
-            # Use basic classification without async complexity
-            category = "politics" if any(word in news.lower() for word in ["minister", "government", "policy", "election"]) else "general"
-            entity = "Government Official" if "minister" in news.lower() else "Unknown"
-            
-            return {
-                "category": category,
-                "entity": entity,
-                "sentiment": "Neutral",
-                "raw": f"Category: {category} | Key Entity: {entity} | Sentiment: Neutral"
-            }
-        except Exception as e:
-            logger.error(f"Legacy LLMAgentA error: {e}")
-            return {
-                "category": "general",
-                "entity": "Unknown",
-                "sentiment": "Neutral", 
-                "raw": "Category: general | Key Entity: Unknown | Sentiment: Neutral"
-            }
-
-class LLMAgentB:
-    """Legacy agent B - now uses simplified fact-checking analysis"""
-    def __init__(self):
-        self.llm = get_llm()
-        self.prompt = ChatPromptTemplate.from_messages([
-            ("system", "You are a fact-checking analyst. Given a news claim, relevant evidence snippets, and prior chat context, produce: (1) brief contradiction/support analysis, (2) short evidence citations by source names, and (3) a numeric confidence 0-1. Keep under 120 words."),
-            ("human", "Claim: {news}\nEvidence:\n{evidence}\nChat History: {chat_history}")
-        ])
-    
-    def analyze(self, news: str, evidence_snippets: List[Dict], chat_history: List[Dict]) -> Dict:
-        try:
-            ev_lines = []
-            for ev in evidence_snippets:
-                src = ev.get("source") or (ev.get("metadata") or {}).get("source") or "unknown"
-                txt = ev.get("text") or ev.get("title") or ev.get("raw") or ""
-                ev_lines.append(f"- [{src}] {txt}")
-            evidence_text = "\n".join(ev_lines) if ev_lines else "(none)"
-            
-            chain = self.prompt | self.llm
-            resp = chain.invoke({
-                "news": news,
-                "evidence": evidence_text,
-                "chat_history": json.dumps(chat_history[-6:], ensure_ascii=False)
-            })
-            content = resp.content.strip()
-            
-            # Extract confidence from response
-            conf = 0.5
-            for token in content.lower().split():
-                try:
-                    val = float(token)
-                    if 0.0 <= val <= 1.0:
-                        conf = val
-                        break
-                except Exception:
-                    continue
-            
-            return {"analysis": content, "confidence": conf}
-        except Exception as e:
-            logger.error(f"Legacy LLMAgentB error: {e}")
-            return {"analysis": f"Analysis error: {str(e)}", "confidence": 0.5}
-
-class LLMAgentC:
-    """Legacy agent C - bias detector and final verdict summarizer"""
-    def __init__(self):
-        self.llm = get_llm()
-        self.prompt = ChatPromptTemplate.from_messages([
-            ("system", "You are a bias detector and final summarizer. Given a claim, an analytical summary with confidence, and any detected tone, produce a final JSON object with keys: verdict (True/False/Uncertain), confidence (0-1), bias (e.g., none/leaning/inflammatory), and a 1-sentence justification. Keep it concise and JSON-valid only."),
-            ("human", "Claim: {news}\nAnalysis: {analysis}\nConfidence: {confidence}\nTone: {tone}")
-        ])
-    
-    def summarize(self, news: str, analysis: str, confidence: float, tone: str) -> Dict:
-        try:
-            chain = self.prompt | self.llm
-            resp = chain.invoke({
-                "news": news,
-                "analysis": analysis,
-                "confidence": confidence,
-                "tone": tone,
-            })
-            content = resp.content.strip()
-            
-            # Try to parse JSON response
-            try:
-                data = json.loads(content)
-            except Exception:
-                # Fallback structure if JSON parsing fails
-                data = {
-                    "verdict": "Uncertain", 
-                    "confidence": confidence, 
-                    "bias": tone or "none", 
-                    "justification": content[:200]
-                }
-            
-            return data
-        except Exception as e:
-            logger.error(f"Legacy LLMAgentC error: {e}")
-            return {
-                "verdict": "Uncertain", 
-                "confidence": 0.5, 
-                "bias": "none", 
-                "justification": f"Error in analysis: {str(e)}"
-            }
+# All legacy compatibility code removed as part of cleanup.
 

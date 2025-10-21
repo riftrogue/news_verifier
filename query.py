@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
 """
 Query Tool for Multi-Agent Fact-Checking System
-Usage: python query.py "your claim to verify"
-Provides detailed structured analysis with sources and references
+
+Usage examples:
+  - Pretty console output:
+      python query.py "your claim to verify"
+  - JSON output (machine-readable):
+      python query.py --json "your claim to verify"
+  - Save JSON output to verified reports:
+      python query.py --json --save "your claim to verify"
 """
 
 import sys
+import os
+import json
+import argparse
 import asyncio
+from typing import Any, Dict
+
+from dotenv import load_dotenv
 from llm_agents import MultiAgentFactChecker
+from web_verifier import save_to_verified_reports
 
 def print_header():
     """Print a nice header for the tool"""
@@ -35,8 +48,31 @@ def get_verdict_emoji(verdict):
     else:
         return "⚠️"
 
-async def analyze_claim(claim: str):
-    """Analyze a single claim and display detailed results"""
+def check_env() -> Dict[str, bool]:
+    """Check for required API keys and return availability map"""
+    keys = {
+        "GROQ_API_KEY_A1": bool(os.getenv("GROQ_API_KEY_A1")),
+        "GROQ_API_KEY_A2": bool(os.getenv("GROQ_API_KEY_A2")),
+        "GROQ_API_KEY_A3": bool(os.getenv("GROQ_API_KEY_A3")),
+        "GROQ_API_KEY_A6": bool(os.getenv("GROQ_API_KEY_A6")),
+        "GEMINI_API_KEY_A4": bool(os.getenv("GEMINI_API_KEY_A4")),
+        "GEMINI_API_KEY_A5": bool(os.getenv("GEMINI_API_KEY_A5")),
+        "TAVILY_API_KEY": bool(os.getenv("TAVILY_API_KEY")),
+    }
+    return keys
+
+
+async def analyze_claim_pretty(claim: str) -> bool:
+    """Analyze a claim and print a human-friendly report to console"""
+    load_dotenv()
+    env_ok = check_env()
+    missing = [k for k, ok in env_ok.items() if not ok]
+    if missing:
+        print("⚠️  Missing environment variables detected:")
+        for k in missing:
+            print(f"   - {k}")
+        print("   The analysis may be limited or fail for some agents.")
+        print()
     
     print_header()
     print(f"📰 CLAIM: {claim}")
@@ -47,7 +83,7 @@ async def analyze_claim(claim: str):
         print("🚀 Initializing Multi-Agent System...")
         fact_checker = MultiAgentFactChecker()
         print("✅ All 6 agents ready! Processing claim...\n")
-        
+
         # Process the claim through all 6 agents
         result = await fact_checker.process_claim(claim)
         
@@ -137,26 +173,73 @@ async def analyze_claim(claim: str):
     
     return True
 
+
+async def analyze_claim_json(claim: str, save: bool = False) -> Dict[str, Any]:
+    """Analyze a claim and return machine-readable JSON; optionally save"""
+    load_dotenv()
+    fact_checker = MultiAgentFactChecker()
+    result = await fact_checker.process_claim(claim)
+
+    final_out = {
+        "news": claim,
+        "verdict": result.final_verdict.lower() == "real",
+        "confidence": result.confidence / 100.0,
+        "context": "multi_agent",
+        "category": result.domain,
+        "bias": "none",
+        "verified_sources": [s.get("url", "") for s in result.sources],
+        "entity_details": {
+            "name": ", ".join(result.named_entities[:3]) if result.named_entities else "Unknown",
+            "label": None,
+            "summary": None,
+            "url": None,
+            "source": "multi_agent_analysis",
+        },
+        "trace": [
+            {
+                "source": s.get("title", "Unknown Source"),
+                "snippet": s.get("snippet", ""),
+                "url": s.get("url", ""),
+            }
+            for s in result.sources[:5]
+        ],
+        "explanation": f"Multi-agent analysis: {result.final_verdict} with {result.confidence}% confidence. "
+                        f"Found {len(result.sources)} sources. Key findings: {'; '.join(result.fact_finding[:2])}",
+        "multi_agent_details": {
+            "domain": result.domain,
+            "named_entities": result.named_entities,
+            "fact_findings": result.fact_finding,
+            "agent_count": 6,
+            "analysis_type": "parallel_fusion",
+        },
+    }
+
+    if save:
+        try:
+            save_to_verified_reports(final_out)
+        except Exception:
+            # Do not fail saving
+            pass
+
+    return final_out
+
 def main():
     """Main function to handle command line arguments"""
-    
-    # Check if claim is provided as argument
-    if len(sys.argv) < 2:
-        print("❌ Error: No claim provided!")
-        print("\n📖 Usage:")
-        print("   python query.py \"your claim to verify\"")
-        print("\n💡 Examples:")
-        print("   python query.py \"Elon Musk bought Twitter for $44 billion\"")
-        print("   python query.py \"Climate change is a hoax\"")
-        print("   python query.py \"COVID vaccines contain microchips\"")
-        sys.exit(1)
-    
-    # Get the claim from command line arguments
-    claim = " ".join(sys.argv[1:])
-    
-    # Run the analysis
+
+    parser = argparse.ArgumentParser(description="Multi-Agent Fact-Checking Query Tool")
+    parser.add_argument("claim", nargs="+", help="The claim to verify")
+    parser.add_argument("--json", action="store_true", help="Output machine-readable JSON")
+    parser.add_argument("--save", action="store_true", help="Save JSON result to verified reports (implies --json)")
+    args = parser.parse_args()
+
+    claim = " ".join(args.claim)
+
     try:
-        asyncio.run(analyze_claim(claim))
+        if args.json or args.save:
+            result = asyncio.run(analyze_claim_json(claim, save=args.save))
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        else:
+            asyncio.run(analyze_claim_pretty(claim))
     except KeyboardInterrupt:
         print("\n\n⚠️  Analysis interrupted by user")
         sys.exit(0)
