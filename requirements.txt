@@ -1,6 +1,6 @@
 python-dotenv
 langchain-core>=0.3.0
 langchain-groq>=0.2.0
-langchain-google-genai>=2.0.0
 requests>=2.31.0
 ddgs>=1.0.0
+requests-tor>=1.4
