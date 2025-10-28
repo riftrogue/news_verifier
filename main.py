@@ -57,9 +57,9 @@ def check_env() -> Dict[str, bool]:
         "GROQ_API_KEY_A1": bool(os.getenv("GROQ_API_KEY_A1")),
         "GROQ_API_KEY_A2": bool(os.getenv("GROQ_API_KEY_A2")),
         "GROQ_API_KEY_A3": bool(os.getenv("GROQ_API_KEY_A3")),
+        "GROQ_API_KEY_A4": bool(os.getenv("GROQ_API_KEY_A4")),
+        "GROQ_API_KEY_A5": bool(os.getenv("GROQ_API_KEY_A5")),
         "GROQ_API_KEY_A6": bool(os.getenv("GROQ_API_KEY_A6")),
-        "GEMINI_API_KEY_A4": bool(os.getenv("GEMINI_API_KEY_A4")),
-        "GEMINI_API_KEY_A5": bool(os.getenv("GEMINI_API_KEY_A5")),
     }
     return keys
 
@@ -125,10 +125,6 @@ pipeline = FactCheckingPipeline()
 async def process_claim_with_multi_agent(news: str) -> Dict[str, Any]:
     """Main entry point for fact-checking claims"""
     return await pipeline.process_claim(news)
-
-def save_to_verified_reports(result: Dict[str, Any], reports_path: str = "data/verified_reports.json") -> None:
-    """Save results"""
-    pipeline.save_to_verified_reports(result, reports_path)
 
 async def analyze_claim_pretty(claim: str) -> bool:
     """Analyze a claim and print a human-friendly report to console"""
@@ -228,7 +224,7 @@ async def analyze_claim_json(claim: str, save: bool = False) -> Dict[str, Any]:
     final_out = await process_claim_with_multi_agent(claim)
     if save:
         try:
-            save_to_verified_reports(final_out)
+            pipeline.save_to_verified_reports(final_out)
         except Exception:
             pass
     return final_out
@@ -270,7 +266,7 @@ def cli_main():
         print("\n\n⚠️  Analysis interrupted by user")
         sys.exit(0)
     except Exception as e:
-        print(f"\n❌ Unexpected error: {str(e)}")
+        print(f"\nError: {str(e)}")
         sys.exit(1)
 
 if __name__ == "__main__":

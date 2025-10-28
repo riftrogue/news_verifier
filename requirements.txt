@@ -1,6 +1,6 @@
-python-dotenv
+python-dotenv>=1.0.0
 langchain-core>=0.3.0
-langchain-groq>=0.2.0
-requests>=2.31.0
-ddgs>=1.0.0
-requests-tor>=1.4
+langchain-groq>=0.3.0
+requests>=2.32.0
+ddgs>=9.6.0
+stem>=1.8.0

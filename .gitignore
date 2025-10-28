@@ -1,6 +1,56 @@
+# Environment variables and secrets
 .env
-data/run_trace.jsonl
-.venv
+.env.local
+.env.*.local
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+nv-env/
+
+# Python cache and compiled files
 __pycache__/
-.ipynb_checkpoints
-.vscode
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data and temporary files
+data/run_trace.jsonl
+data/temp_input.json
+data/embeddings/
+*.log
+*.tmp
+temp/
+tmp/
+
+# Tor installation directory (auto-downloaded)
+.tor/
+
+# Test and coverage files
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# OS generated files
+*.pid
+*.seed
+*.log.*
+node_modules/

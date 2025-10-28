@@ -15,7 +15,7 @@ from ddgs import DDGS
 
 # Tor proxy support
 try:
-    from requests_tor import RequestsTor
+    from tor_manager import TorManager
     TOR_AVAILABLE = True
 except ImportError:
     TOR_AVAILABLE = False
@@ -64,13 +64,21 @@ class MultiAgentFactChecker:
         
         # Initialize Tor proxy if available and enabled
         self.use_tor = TOR_AVAILABLE and os.getenv("USE_TOR", "false").lower() == "true"
+        self.tor_manager = None
         if self.use_tor:
             try:
-                self.tor_session = RequestsTor()
-                logger.info("✅ Tor proxy enabled")
+                self.tor_manager = TorManager()
+                # Auto-install and start Tor
+                if self.tor_manager.ensure_tor_installed() and self.tor_manager.start_tor():
+                    logger.info("✅ Tor proxy enabled and running")
+                else:
+                    logger.warning("❌ Failed to start Tor. Falling back to direct connection.")
+                    self.use_tor = False
+                    self.tor_manager = None
             except Exception as e:
                 logger.warning(f"❌ Failed to initialize Tor: {e}. Falling back to direct connection.")
                 self.use_tor = False
+                self.tor_manager = None
         
         # Initialize LLMs for each agent with specific API keys and optimized models
         self.llms = {
@@ -87,6 +95,22 @@ class MultiAgentFactChecker:
             'politics': 0.6, 'sports': 0.4, 'entertainment': 0.4,
             'science/health': 0.4, 'business/finance': 0.4, 'general': 0.4
         }
+    
+    def cleanup(self):
+        """Clean up resources, specifically Tor connection."""
+        if hasattr(self, 'tor_manager') and self.tor_manager:
+            try:
+                self.tor_manager.cleanup()
+                logger.info("🧹 Tor resources cleaned up")
+            except Exception as e:
+                logger.warning(f"Warning during Tor cleanup: {e}")
+    
+    def __del__(self):
+        """Destructor to ensure cleanup is called."""
+        try:
+            self.cleanup()
+        except Exception:
+            pass  # Ignore errors during cleanup in destructor
 
     async def web_search(self, query: str, max_results: Optional[int] = None, timelimit: Optional[str] = None) -> List[Dict[str, str]]:
         """Perform web search using DuckDuckGo with rate limiting and async safety"""
@@ -100,20 +124,52 @@ class MultiAgentFactChecker:
                 await asyncio.sleep(1.5)
                 
                 # Use Tor proxy for DDGS if enabled
-                if self.use_tor:
-                    # RequestsTor doesn't work directly with DDGS, so we fall back to direct search
-                    # but we can use Tor for other web requests in the verification process
-                    with DDGS() as ddgs:
-                        search_results = ddgs.text(query, region="in-en", safesearch="moderate", timelimit=timelimit, max_results=limit)
-                        for result in search_results:
-                            results.append({
-                                "url": result.get("href", ""), 
-                                "title": result.get("title", ""), 
-                                "snippet": result.get("body", "")
-                            })
-                        
-                    search_duration = asyncio.get_event_loop().time() - search_start
-                    logger.info(f"🔒 Search '{query[:50]}...' returned {len(results)} results in {search_duration:.2f}s (Tor available for web requests)")
+                if self.use_tor and self.tor_manager:
+                    # Get proxy URL from TorManager
+                    tor_proxy = self.tor_manager.get_proxy_url()
+                    
+                    if tor_proxy:
+                        logger.info(f"🔒 Using Tor SOCKS proxy: {tor_proxy}")
+                    
+                    if tor_proxy:
+                        try:
+                            with DDGS(proxy=tor_proxy, timeout=10) as ddgs:
+                                search_results = ddgs.text(query, region="in-en", safesearch="moderate", timelimit=timelimit, max_results=limit)
+                                for result in search_results:
+                                    results.append({
+                                        "url": result.get("href", ""), 
+                                        "title": result.get("title", ""), 
+                                        "snippet": result.get("body", "")
+                                    })
+                                
+                            search_duration = asyncio.get_event_loop().time() - search_start
+                            logger.info(f"🔒 Tor Search '{query[:50]}...' returned {len(results)} results in {search_duration:.2f}s (via SOCKS proxy)")
+                        except Exception as tor_error:
+                            logger.warning(f"Tor proxy failed for '{query[:50]}...': {tor_error}. Falling back to direct search.")
+                            # Fallback to direct search if Tor fails
+                            with DDGS() as ddgs:
+                                search_results = ddgs.text(query, region="in-en", safesearch="moderate", timelimit=timelimit, max_results=limit)
+                                for result in search_results:
+                                    results.append({
+                                        "url": result.get("href", ""), 
+                                        "title": result.get("title", ""), 
+                                        "snippet": result.get("body", "")
+                                    })
+                            search_duration = asyncio.get_event_loop().time() - search_start
+                            logger.info(f"Fallback Search '{query[:50]}...' returned {len(results)} results in {search_duration:.2f}s")
+                    else:
+                        logger.warning("No Tor SOCKS proxy available. Falling back to direct search.")
+                        # Fallback to direct search if no Tor proxy found
+                        with DDGS() as ddgs:
+                            search_results = ddgs.text(query, region="in-en", safesearch="moderate", timelimit=timelimit, max_results=limit)
+                            for result in search_results:
+                                results.append({
+                                    "url": result.get("href", ""), 
+                                    "title": result.get("title", ""), 
+                                    "snippet": result.get("body", "")
+                                })
+                        search_duration = asyncio.get_event_loop().time() - search_start
+                        logger.info(f"Direct Search '{query[:50]}...' returned {len(results)} results in {search_duration:.2f}s")
                 else:
                     with DDGS() as ddgs:
                         search_results = ddgs.text(query, region="in-en", safesearch="moderate", timelimit=timelimit, max_results=limit)
@@ -124,7 +180,7 @@ class MultiAgentFactChecker:
                                 "snippet": result.get("body", "")
                             })
                     search_duration = asyncio.get_event_loop().time() - search_start
-                    logger.info(f"Search '{query[:50]}...' returned {len(results)} results in {search_duration:.2f}s")
+                    logger.info(f"Direct Search '{query[:50]}...' returned {len(results)} results in {search_duration:.2f}s")
                         
             except Exception as e:
                 search_duration = asyncio.get_event_loop().time() - search_start
@@ -336,20 +392,28 @@ You are an expert fact-checker creating precise search queries for official sour
 
 Generate 4 search queries for this claim: "{claim}"
 
+**INTELLIGENT SITE SELECTION**: Choose appropriate sites based on claim category:
+
+**POLITICS/GOVERNMENT**: site:pib.gov.in, site:pmindia.gov.in, site:india.gov.in, site:mygov.in
+**BUSINESS/FINANCE**: site:reuters.com, site:bloomberg.com, site:forbes.com, site:moneycontrol.com, site:livemint.com
+**HEALTH/SCIENCE**: site:who.int, site:mohfw.gov.in, site:icmr.gov.in, site:nature.com
+**SPORTS**: site:bcci.tv, site:aiff.com, site:espn.in, site:sportskeeda.com
+**ENTERTAINMENT**: site:filmfare.com, site:bollywoodhungama.com, site:pinkvilla.com
+**GENERAL NEWS**: site:timesofindia.com, site:hindustantimes.com, site:indianexpress.com
+**INTERNATIONAL**: site:bbc.com, site:cnn.com, site:aljazeera.com
+
 Requirements:
-1. Use site: operators for official sources (site:pib.gov.in, site:pmindia.gov.in, site:forbes.com, site:reuters.com)
-2. Include fact-check variants with terms like "fact check", "verification", "debunked"
+1. **SMART SITE TARGETING**: Based on claim domain '{domain}', select 2-3 most relevant site: operators
+2. Include fact-check variants with terms like "fact check", "verification", "debunked"  
 3. Add 2025 filters using after:2025-01-01 when relevant
-4. For political claims, prioritize government sites
-5. For business claims, prioritize financial news sites
-6. **CRITICAL**: Include real-time keywords: "real-time OR live OR latest OR current OR updated" for recent claims
-7. For financial data, add terms like "net worth real-time", "latest valuation", "current market cap"
+4. **CRITICAL**: Include real-time keywords: "real-time OR live OR latest OR current OR updated" for recent claims
+5. For financial data, add terms like "net worth real-time", "latest valuation", "current market cap"
 
 Format as:
-QUERY1: [official site query with real-time terms]
-QUERY2: [fact check query] 
-QUERY3: [recent news with 2025 filter + live/latest keywords]
-QUERY4: [alternative verification query with current data terms]
+QUERY1: [domain-specific official site query with real-time terms]
+QUERY2: [fact check query with appropriate fact-check sites] 
+QUERY3: [recent news with 2025 filter + live/latest keywords + domain-relevant sites]
+QUERY4: [alternative verification query with current data terms + backup sites]
 
 Claim domain: {domain}
             """)
@@ -365,15 +429,15 @@ Claim domain: {domain}
                 if query_match:
                     queries.append(query_match.group(1).strip())
             
-            # Fallback queries if parsing fails
+            # Enhanced fallback queries with open sources
             if len(queries) < 4:
                 current_year = datetime.now().year
                 real_time_terms = "(real-time OR live OR latest OR current OR updated)"
                 queries = [
-                    f"site:pib.gov.in OR site:pmindia.gov.in \"{claim}\" {real_time_terms}",
-                    f"\"{claim}\" fact check debunk hoax",
-                    f"\"{claim}\" after:2025-01-01 (latest OR current) site:reuters.com OR site:forbes.com",
-                    f"site:timesofindia.com OR site:hindustantimes.com \"{claim}\" {real_time_terms}"
+                    f"site:wikipedia.org OR site:britannica.com OR site:pib.gov.in \"{claim}\" {real_time_terms}",
+                    f"\"{claim}\" fact check debunk hoax site:factcheck.org OR site:snopes.com OR site:politifact.com",
+                    f"\"{claim}\" after:2025-01-01 (latest OR current) site:reuters.com OR site:bbc.com OR site:apnews.com",
+                    f"site:timesofindia.com OR site:thehindu.com OR site:ndtv.com OR site:firstpost.com \"{claim}\" {real_time_terms}"
                 ]
             
             # Step 2: Perform searches
@@ -442,11 +506,19 @@ REASONING: [brief explanation of the counts]
                 num_contradict = 0
                 reasoning = "No search results found"
             
-            # Step 4: Calculate s3 score
-            # s3 = (num_contradict + 1) / (num_contradict + 1 + num_support + 2)
-            s3 = (num_contradict + 1) / (num_contradict + 1 + num_support + 2)
+            # Step 4: Calculate s3 score - improved to reduce false negatives
+            # Original: s3 = (num_contradict + 1) / (num_contradict + 1 + num_support + 2)
+            if num_support > num_contradict:
+                # More support than contradictions → favor Real (lower fake score)
+                s3 = max(0.15, (num_contradict + 0.5) / (num_contradict + num_support + 4))
+            elif num_contradict == 0 and num_support == 0:
+                # No evidence either way → neutral (was too harsh before)
+                s3 = 0.5
+            else:
+                # More contradictions → use conservative formula, cap at 0.75
+                s3 = min(0.75, (num_contradict + 1) / (num_contradict + 1 + num_support + 2))
             
-            # Cap at 0.2 if support > 1.5 * contradict (strong support)
+            # Additional cap if support > 1.5 * contradict (strong support)
             if num_support > 1.5 * num_contradict:
                 s3 = min(s3, 0.2)
             
@@ -602,15 +674,54 @@ Claim domain: {domain}
                 if query_match:
                     queries.append(query_match.group(1).strip())
             
-            # Fallback queries if parsing fails
+            # Smart fallback: let A5 LLM generate domain-specific queries
             if len(queries) < 4:
-                real_time_terms = "(real-time OR live OR latest OR current OR updated)"
-                queries = [
-                    f"\"{claim}\" verified OR debunked OR \"fact check\" {real_time_terms}",
-                    f"\"{claim}\" after:2025-01-01 (latest OR current) site:reuters.com OR site:timesofindia.com",
-                    f"\"{claim}\" hoax OR fake OR misinformation",
-                    f"site:factcheck.org OR site:snopes.com \"{claim}\" {real_time_terms}"
-                ]
+                fallback_prompt = PromptTemplate.from_template("""
+Create 4 historical verification queries for: "{claim}" (Domain: {domain})
+
+**DOMAIN-SPECIFIC APPROACH**:
+- **POLITICS**: Use government archives, political fact-checkers, parliamentary records
+- **BUSINESS**: Use financial databases, company filings, business news archives  
+- **HEALTH**: Use medical journals, WHO archives, health ministry records
+- **SPORTS**: Use sports federations, tournament records, official league sites
+- **ENTERTAINMENT**: Use industry databases, award records, box office data
+- **GENERAL**: Use news archives, Wikipedia, general fact-checkers
+
+Format:
+QUERY1: [domain-specific historical verification]
+QUERY2: [fact-check database search]  
+QUERY3: [recent archives with real-time terms]
+QUERY4: [alternative verification approach]
+
+Include real-time terms: "real-time OR live OR latest OR current OR updated"
+                """)
+                
+                try:
+                    fallback_response = await self.llms['A5'].ainvoke(
+                        fallback_prompt.format(claim=claim, domain=domain)
+                    )
+                    # Parse fallback queries
+                    fallback_queries = []
+                    for i in range(1, 5):
+                        query_match = re.search(rf'QUERY{i}:\s*(.+)', fallback_response.content, re.IGNORECASE)
+                        if query_match:
+                            fallback_queries.append(query_match.group(1).strip())
+                    
+                    queries = fallback_queries if len(fallback_queries) >= 4 else [
+                        f"\"{claim}\" verified OR debunked OR \"fact check\" (real-time OR latest)",
+                        f"\"{claim}\" after:2025-01-01 site:wikipedia.org OR site:reuters.com OR site:bbc.com", 
+                        f"\"{claim}\" hoax OR fake OR misinformation site:factcheck.org OR site:snopes.com",
+                        f"site:timesofindia.com OR site:thehindu.com OR site:ndtv.com \"{claim}\" (latest OR current)"
+                    ]
+                except Exception as e:
+                    logger.warning(f"A5 fallback LLM failed: {e}")
+                    real_time_terms = "(real-time OR live OR latest OR current OR updated)"
+                    queries = [
+                        f"\"{claim}\" verified OR debunked OR \"fact check\" {real_time_terms}",
+                        f"\"{claim}\" after:2025-01-01 site:wikipedia.org OR site:reuters.com OR site:bbc.com",
+                        f"\"{claim}\" hoax OR fake OR misinformation site:factcheck.org OR site:snopes.com",
+                        f"site:timesofindia.com OR site:thehindu.com OR site:ndtv.com \"{claim}\" {real_time_terms}"
+                    ]
             
             # Step 2: Perform searches and collect passages
             all_sources = []
@@ -685,9 +796,17 @@ REASONING: [brief explanation]
                 contradict_count = 0
                 reasoning = "No search results found"
             
-            # Step 4: Calculate s5 score
-            # s5 = (contradict_count + 1) / (contradict_count + 1 + support_count + 2)
-            s5 = (contradict_count + 1) / (contradict_count + 1 + support_count + 2)
+            # Step 4: Calculate s5 score - improved historical context scoring
+            # Original: s5 = (contradict_count + 1) / (contradict_count + 1 + support_count + 2)
+            if support_count > contradict_count:
+                # More historical support → favor Real (lower fake score)
+                s5 = max(0.2, (contradict_count + 0.5) / (contradict_count + support_count + 4))
+            elif contradict_count == 0 and support_count == 0:
+                # No historical context → neutral but slightly favor Real for tech claims
+                s5 = 0.4  # Reduced from 0.333
+            else:
+                # More contradictions → conservative scoring, cap at 0.8
+                s5 = min(0.8, (contradict_count + 1) / (contradict_count + 1 + support_count + 2))
             
             logger.info(f"A5: Support={support_count}, Contradict={contradict_count}, s5={s5:.3f}")
             
@@ -754,8 +873,14 @@ REASONING: [brief explanation]
             confidence = int(confidence_base * confidence_penalty)
             confidence = max(70, min(95, confidence))  # Capped 70-95%
             
-            # Adjust threshold based on domain to avoid borderline "Fake" for business claims
-            threshold = 0.55 if domain == "business/finance" else 0.5
+            # Adjust threshold based on domain and claim content
+            if domain == "business/finance":
+                threshold = 0.55  # Higher threshold for business claims
+            elif any(keyword in claim.lower() for keyword in ['ai', 'gpt', 'openai', 'technology', 'software', 'release']):
+                threshold = 0.52  # Slightly higher threshold for tech claims prone to false negatives
+            else:
+                threshold = 0.5   # Standard threshold
+            
             final_verdict = "Fake" if P_fake > threshold else "Real"
             
             # Use A6 Groq LLM to generate explanation
