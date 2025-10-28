@@ -30,6 +30,10 @@ GROQ_API_KEY_A6=your_key_here
 USE_TOR=false
 ```
 
+**Tor Configuration:**
+- `USE_TOR=false` - Normal operation (default, faster)
+- `USE_TOR=true` - Anonymous web scraping (requires Tor installation, slower but private)
+
 ### Usage
 ```bash
 # Pretty output
@@ -92,31 +96,6 @@ requests>=2.31.0
 ddgs>=1.0.0
 requests-tor>=1.4
 ```
-
-## 🔧 Advanced
-
-**Tor Setup:**
-1. Install Tor Browser or daemon
-2. Set `USE_TOR=true` in `.env`
-3. System auto-detects and falls back if unavailable
-
-**Programmatic:**
-```python
-from llm_agents import MultiAgentFactChecker
-import asyncio
-
-async def check_claim():
-    checker = MultiAgentFactChecker()
-    result = await checker.process_claim("Your claim")
-    print(f"Verdict: {result.final_verdict} ({result.confidence}%)")
-
-asyncio.run(check_claim())
-```
-
-**Business/Finance Optimization:**
-- Uses 0.55 threshold (vs 0.5 default) to reduce false "Fake" verdicts
-- Enhanced real-time keyword searches for current financial data
-- Treats older trending data as neutral rather than contradictory
 
 ---
 
